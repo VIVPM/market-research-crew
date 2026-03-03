@@ -1,6 +1,10 @@
 import sys
 import os
 
+os.environ["PYTHONUTF8"] = "1"
+os.environ["PYTHONIOENCODING"] = "utf-8"
+os.environ["CREWAI_DISABLE_TELEMETRY"] = "true"
+
 # Add the src directory to the Python path so the app can find the market_research_crew package
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
@@ -8,6 +12,25 @@ import streamlit as st
 from market_research_crew.main import run
 
 st.set_page_config(page_title="Market Research Crew", page_icon="📈", layout="wide")
+
+# ── Sidebar — API Keys ────────────────────────────────────────────────────────
+st.sidebar.header("🔑 API Keys")
+
+gemini_key = st.sidebar.text_input("Gemini API Key", type="password")
+st.sidebar.markdown("[Get a Gemini API key →](https://aistudio.google.com/apikey)")
+
+serper_key = st.sidebar.text_input("Serper API Key", type="password")
+st.sidebar.markdown("[Get a Serper API key →](https://serper.dev/)")
+
+# Inject keys into env so the crew and SerperDevTool pick them up
+if gemini_key:
+    os.environ["GEMINI_API_KEY"] = gemini_key
+if serper_key:
+    os.environ["SERPER_API_KEY"] = serper_key
+
+if not gemini_key or not serper_key:
+    _missing = [k for k, v in [("Gemini", gemini_key), ("Serper", serper_key)] if not v]
+    st.sidebar.warning(f"Enter your {' & '.join(_missing)} API key(s) above to launch the crew.")
 
 st.title("📈 Market Research Crew AI")
 st.markdown("Enter your product idea below to generate a comprehensive market research report.")
@@ -22,6 +45,9 @@ product_idea = st.text_area(
 if st.button("Generate Market Research", type="primary"):
     if not product_idea.strip():
         st.error("Please enter a product idea.")
+    elif not gemini_key or not serper_key:
+        _api_missing = [k for k, v in [("Gemini", gemini_key), ("Serper", serper_key)] if not v]
+        st.error(f"Please enter your **{' & '.join(_api_missing)} API key(s)** in the sidebar before launching.")
     else:
         st.info("Kickstarting the Market Research Crew... This might take a few minutes. Please wait.")
         
@@ -106,3 +132,4 @@ if st.button("Generate Market Research", type="primary"):
             
         except Exception as e:
             st.error(f"An error occurred while running the crew: {e}")
+
