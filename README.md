@@ -1,90 +1,166 @@
-# MarketResearchCrew Crew
+# 📈 Market Research Crew AI
 
-MarketResearchCrew Crew project is designed to help you set up a multi-agent AI system that performs comprehensive market research, identifies competitors, deeply understands target customers, designs product strategy, and outputs a final business analysis report.
+An autonomous AI-powered market research and business analysis system built with [CrewAI](https://crewai.com) and deployed as a Streamlit web app. Enter your product idea and let a crew of specialized AI agents handle market sizing, competitive intelligence, customer insights, product strategy, and a full business report — all in one run.
 
-## 🚀 Architecture
+---
 
-This crew employs a sequence of specialized AI agents to handle every aspect of market research sequentially:
+## 🌐 Live Demo
 
-```mermaid
-graph TD
-    User([User Product Idea]) --> App[Streamlit Frontend]
-    App --> Coordinator[CrewAI Sequential Process]
-    
-    subgraph Market Research Crew
-        A[Market Research Specialist] -->|Market & Industry Trends| B[Competitive Intelligence Analyst]
-        B -->|Competitor Matrix & Gaps| C[Customer Insights Researcher]
-        A --> C
-        C -->|Personas & Journey| D[Product Strategy Advisor]
-        A --> D
-        B --> D
-        D -->|Roadmap & MVP Features| E[Business Analyst]
-        A --> E
-        B --> E
-        C --> E
-        
-    end
-    
-    E -->|Final Output| Report[reports/report.md]
-    Report --> App
-    App --> UI([Downloadable Report UI])
+> Deploy on [Streamlit Cloud](https://streamlit.io/cloud) by connecting this repo and running `app.py`.
+
+---
+
+## ✨ Features
+
+- 📊 **Market Research** — TAM/SAM/SOM sizing, industry trends, regulatory landscape & technology readiness
+- 🕵️ **Competitive Intelligence** — Competitor profiling, comparison matrix, positioning map & gap analysis
+- 👥 **Customer Insights** — Personas, pain-point matrix, customer journey maps & acquisition channels
+- 🗺️ **Product Strategy** — MVP feature prioritization, differentiation strategy & 12-month roadmap
+- 💼 **Business Analysis** — Pricing strategy, revenue model, risk matrix & Go/No-Go recommendation
+- 📄 **Report Download** — Full business analysis report exported as `report.md` with one click
+
+---
+
+## 🤖 Agents
+
+| Agent | Role |
+|---|---|
+| **Market Research Specialist** | Market sizing, industry trends, regulatory & technology landscape |
+| **Competitive Intelligence Analyst** | Competitor mapping, feature comparison matrix, gap discovery |
+| **Customer Insights Researcher** | Persona creation, pain-point analysis, customer journey mapping |
+| **Product Strategy Advisor** | MVP prioritization, differentiation strategy, product roadmap |
+| **Business Analyst & Report Synthesizer** | Pricing, revenue projections, risk analysis & final recommendation |
+
+> All agents are powered by **Gemini** models via `crewai[google-genai]` and equipped with web search + scraping tools.
+
+---
+
+## 🛠️ Agent Tools
+
+Every agent in the crew has access to the full research toolkit:
+
+| Tool | Purpose |
+|---|---|
+| `SerperDevTool` | Real-time Google web search for market data & news |
+| `ScrapeWebsiteTool` | Scrape competitor websites & product pages |
+| `SeleniumScrapingTool` | Dynamic content scraping for JS-rendered pages |
+
+---
+
+## 📋 Tasks Pipeline (Sequential)
+
+```
+Market Research → Competitive Intelligence → Customer Insights
+    → Product Strategy → Business Analysis & Final Report
 ```
 
-## Installation
+Each task feeds its findings as context into the next, building a progressively deeper picture of the opportunity.
 
-Ensure you have Python >=3.10 <3.14 installed on your system. This project uses [UV](https://docs.astral.sh/uv/) for dependency management and package handling, offering a seamless setup and execution experience.
-
-First, if you haven't already, install uv:
-
-```bash
-pip install uv
-```
-
-Next, navigate to your project directory and install the dependencies:
-
-```bash
-crewai install
-```
-### Customizing
-
-**Add your `OPENAI_API_KEY` into the `.env` file** *(Or configure your LLM provider as needed)*
-
-- Modify `src/market_research_crew/config/agents.yaml` to define your agents
-- Modify `src/market_research_crew/config/tasks.yaml` to define your tasks
-- Modify `src/market_research_crew/crew.py` to add your own logic, tools and specific args
-
-## Running the Project
-
-To kickstart your crew of AI agents using the graphical interface:
-
-```bash
-streamlit run app.py
-```
-
-1. Enter your **Product Idea** into the text box.
-2. Click **Generate Market Research**.
-3. Watch the continuous **Live Execution Logs** expander to see the agents at work.
-4. Download the finalized `report.md` via the provided download button.
-
-### CLI Usage
-If you prefer to run it strictly from the terminal (without the UI):
-```bash
-$ crewai run
-```
-*(This command requires hard-coded inputs inside `main.py`)*
+---
 
 ## 📊 Evaluation Results
 
 ![Market Research Crew Testing Results](Screenshot%202026-03-03%20192049.png)
 
-During testing, the Market Research Crew demonstrated exceptionally strong performance, achieving an impressive **overall average score of 9.6/10** with an execution time of 476 seconds. The specialized agents consistently delivered highly accurate and insightful results across all their respective tasks (scoring between 9.4 and 9.7 on average):
+During testing, the Market Research Crew demonstrated exceptionally strong performance, achieving an impressive **overall average score of 9.6/10** with an execution time of 476 seconds. The specialized agents consistently delivered highly accurate and insightful results across all their respective tasks:
 
 - **Customer Insights Researcher** and **Product Strategy Advisor** tied for the highest average score of **9.7**, indicating deep understanding of the customer base and excellent prioritization of actionable MVP features.
-- **Market Research Specialist** and **Business Analyst and Report Synthesizer** also performed incredibly well with an average score of **9.5**, successfully extracting relevant macro trends and compiling the findings into a cohesive final business report.
-- **Competitive Intelligence Analyst** achieved a strong **9.4**, thoroughly mapping the competitive landscape to find viable market gaps.
+- **Market Research Specialist** and **Business Analyst and Report Synthesizer** also performed incredibly well with an average score of **9.5**, successfully extracting relevant macro trends and compiling findings into a cohesive final business report.
+- **Competitive Intelligence Analyst** achieved a strong **9.4**, thoroughly mapping the competitive landscape to uncover viable market gaps.
 
 This highlights the crew's robust capability to execute comprehensive, data-driven market research and strategic planning autonomously, yielding production-ready business analysis material.
 
-## Understanding Your Crew
+---
 
-The MarketResearchCrew is composed of multiple AI agents, each with unique roles, goals, and tools. These agents collaborate on a series of tasks, defined in `config/tasks.yaml`, leveraging their collective skills to achieve complex objectives. The `config/agents.yaml` file outlines the capabilities and configurations of each agent in your crew.
+## 📁 Project Structure
+
+```
+market_research_crew/
+├── app.py                          # Streamlit UI (entry point)
+├── reports/
+│   └── report.md                   # Final business analysis report (auto-generated)
+├── knowledge/                      # Optional knowledge base files
+├── src/
+│   └── market_research_crew/
+│       ├── crew.py                 # CrewAI agents, tasks & crew definition
+│       ├── main.py                 # CLI entry point (crewai run)
+│       ├── config/
+│       │   ├── agents.yaml         # Agent roles, goals & backstories
+│       │   └── tasks.yaml          # Task descriptions & expected outputs
+│       └── tools/                  # Custom tool definitions
+└── pyproject.toml
+```
+
+---
+
+## 🛠️ Setup & Local Run
+
+### 1. Clone & install
+
+```bash
+git clone https://github.com/VIVPM/market_research_crew.git
+cd market_research_crew
+pip install uv
+crewai install
+```
+
+### 2. Set up `.env`
+
+```env
+GEMINI_API_KEY=your_gemini_api_key
+SERPER_API_KEY=your_serper_api_key
+```
+
+### 3. Run locally
+
+```bash
+streamlit run app.py
+```
+
+Or run the crew via CLI (requires hard-coded input in `main.py`):
+
+```bash
+crewai run
+```
+
+---
+
+## ☁️ Streamlit Cloud Deployment
+
+1. Push this repo to GitHub
+2. Go to [Streamlit Cloud](https://streamlit.io/cloud) → New App → select `app.py`
+3. No secrets needed — users enter API keys via the sidebar at runtime
+
+> API keys are entered by the user in the sidebar at runtime (not stored anywhere).
+
+---
+
+## 🔑 API Keys Required
+
+Both keys are entered directly in the app sidebar — no Streamlit secrets configuration needed.
+
+| Key | Where to get |
+|---|---|
+| **Gemini API Key** | [aistudio.google.com/apikey](https://aistudio.google.com/apikey) |
+| **Serper API Key** | [serper.dev](https://serper.dev/) |
+
+---
+
+## 📦 Dependencies
+
+```
+crewai
+crewai-tools
+crewai[google-genai]
+streamlit
+python-dotenv
+selenium
+```
+
+> This project uses [UV](https://docs.astral.sh/uv/) for fast, reliable dependency management.
+
+---
+
+## 📄 License
+
+MIT License — see [LICENSE](LICENSE)
