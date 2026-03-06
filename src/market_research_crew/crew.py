@@ -7,13 +7,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# create the tools for the agent
-web_search_tool = SerperDevTool()
-web_scraping_tool = ScrapeWebsiteTool()
-selenium_scraping_tool = SeleniumScrapingTool()
-
-toolkit = [web_search_tool, web_scraping_tool, selenium_scraping_tool]
-
 # define the crew class
 @CrewBase
 class MarketResearchCrew():
@@ -25,42 +18,46 @@ class MarketResearchCrew():
     # provide the path for configuration files
     agents_config = "config/agents.yaml" 
     tasks_config = "config/tasks.yaml"
-    
+
+    def _toolkit(self):
+        """Instantiate tools lazily — only when the crew actually runs, not on import."""
+        return [SerperDevTool(), ScrapeWebsiteTool(), SeleniumScrapingTool()]
+
     # ================ Agents ========================
     
     @agent
     def market_research_specialist(self) -> Agent:
         return Agent(
             config=self.agents_config["market_research_specialist"],
-            tools=toolkit
+            tools=self._toolkit()
         )
 
     @agent
     def competitive_intelligence_analyst(self) -> Agent:
         return Agent(
             config=self.agents_config["competitive_intelligence_analyst"],
-            tools=toolkit
+            tools=self._toolkit()
         )
         
     @agent
     def customer_insights_researcher(self) -> Agent:
         return Agent(
             config=self.agents_config["customer_insights_researcher"],
-            tools=toolkit
+            tools=self._toolkit()
         )
         
     @agent
     def product_strategy_advisor(self) -> Agent:
         return Agent(
             config=self.agents_config["product_strategy_advisor"],
-            tools=toolkit
+            tools=self._toolkit()
         )
         
     @agent
     def business_analyst(self) -> Agent:
         return Agent(
             config=self.agents_config["business_analyst"],
-            tools=toolkit
+            tools=self._toolkit()
         )
         
     # ================ Tasks ======================
