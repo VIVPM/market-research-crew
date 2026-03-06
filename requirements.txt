@@ -1,0 +1,14 @@
+# Core CrewAI framework with all tools (includes crewai-tools, litellm, pydantic)
+crewai[tools]>=0.141.0,<1.0.0
+
+# Google Gemini support via CrewAI
+crewai[google-genai]
+
+# Streamlit UI
+streamlit
+
+# Selenium for dynamic web scraping (used by SeleniumScrapingTool)
+selenium
+
+# Environment variable management
+python-dotenv
