@@ -105,30 +105,25 @@ if st.button("Generate Market Research", type="primary"):
             
             st.markdown("### 📊 Market Research Report")
             
-            # Read the generated report from the reports directory
-            report_path = os.path.join(os.path.dirname(__file__), 'reports', 'report.md')
-            
-            if os.path.exists(report_path):
-                with open(report_path, 'r', encoding='utf-8') as file:
-                    report_content = file.read()
-                
-                # Displaying the result in the UI
-                st.markdown(report_content)
-                
-                # Provide a download button for the user
-                st.download_button(
-                    label="📥 Download Market Research Report",
-                    data=report_content,
-                    file_name="market_research_report.md",
-                    mime="text/markdown",
-                    type="primary"
-                )
+            # Use the raw output from the crew directly instead of reading a local file
+            report_content = ""
+            if hasattr(result, 'raw'):
+                report_content = result.raw
             else:
-                st.warning("The report file could not be found, but here is the raw result:")
-                if hasattr(result, 'raw'):
-                    st.markdown(result.raw)
-                else:
-                    st.markdown(str(result))
+                report_content = str(result)
+                
+            # Displaying the result in the UI
+            st.markdown(report_content)
+            
+            # Provide a download button directly from the variable
+            st.download_button(
+                label="📥 Download Market Research Report",
+                data=report_content,
+                file_name="market_research_report.md",
+                mime="text/markdown",
+                type="primary"
+            )
+            
             
         except Exception as e:
             st.error(f"An error occurred while running the crew: {e}")
