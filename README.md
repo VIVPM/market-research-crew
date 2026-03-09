@@ -41,9 +41,8 @@ Every agent in the crew has access to the full research toolkit:
 
 | Tool | Purpose |
 |---|---|
-| `SerperDevTool` | Real-time Google web search for market data & news |
+| `TavilySearchTool` | AI-powered real-time web search — returns clean, summarized results |
 | `ScrapeWebsiteTool` | Scrape competitor websites & product pages |
-| `SeleniumScrapingTool` | Dynamic content scraping for JS-rendered pages |
 
 ---
 
@@ -108,7 +107,7 @@ crewai install
 
 ```env
 GEMINI_API_KEY=your_gemini_api_key
-SERPER_API_KEY=your_serper_api_key
+TAVILY_API_KEY=your_tavily_api_key
 ```
 
 ### 3. Run locally
@@ -142,7 +141,7 @@ Both keys are entered directly in the app sidebar — no Streamlit secrets confi
 | Key | Where to get |
 |---|---|
 | **Gemini API Key** | [aistudio.google.com/apikey](https://aistudio.google.com/apikey) |
-| **Serper API Key** | [serper.dev](https://serper.dev/) |
+| **Tavily API Key** | [app.tavily.com](https://app.tavily.com) |
 
 ---
 
@@ -154,7 +153,7 @@ crewai-tools
 crewai[google-genai]
 streamlit
 python-dotenv
-selenium
+tavily-python
 ```
 
 > This project uses [UV](https://docs.astral.sh/uv/) for fast, reliable dependency management.

@@ -2,7 +2,7 @@ from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 from crewai.agents.agent_builder.base_agent import BaseAgent
 from typing import List
-from crewai_tools import SerperDevTool, ScrapeWebsiteTool
+from crewai_tools import TavilySearchTool, ScrapeWebsiteTool
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -21,7 +21,7 @@ class MarketResearchCrew():
 
     def _toolkit(self):
         """Instantiate tools lazily — only when the crew actually runs, not on import."""
-        return [SerperDevTool(), ScrapeWebsiteTool()]
+        return [TavilySearchTool(), ScrapeWebsiteTool()]
 
     # ================ Agents ========================
     

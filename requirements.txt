@@ -9,3 +9,6 @@ streamlit
 
 # Environment variable management
 python-dotenv
+
+# Tavily search
+tavily-python

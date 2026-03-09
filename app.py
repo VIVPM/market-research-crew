@@ -19,17 +19,17 @@ st.sidebar.header("🔑 API Keys")
 gemini_key = st.sidebar.text_input("Gemini API Key", type="password")
 st.sidebar.markdown("[Get a Gemini API key →](https://aistudio.google.com/apikey)")
 
-serper_key = st.sidebar.text_input("Serper API Key", type="password")
-st.sidebar.markdown("[Get a Serper API key →](https://serper.dev/)")
+tavily_key = st.sidebar.text_input("Tavily API Key", type="password")
+st.sidebar.markdown("[Get a Tavily API key →](https://app.tavily.com)")
 
-# Inject keys into env so the crew and SerperDevTool pick them up
+# Inject keys into env so the crew and TavilySearchTool pick them up
 if gemini_key:
     os.environ["GEMINI_API_KEY"] = gemini_key
-if serper_key:
-    os.environ["SERPER_API_KEY"] = serper_key
+if tavily_key:
+    os.environ["TAVILY_API_KEY"] = tavily_key
 
-if not gemini_key or not serper_key:
-    _missing = [k for k, v in [("Gemini", gemini_key), ("Serper", serper_key)] if not v]
+if not gemini_key or not tavily_key:
+    _missing = [k for k, v in [("Gemini", gemini_key), ("Tavily", tavily_key)] if not v]
     st.sidebar.warning(f"Enter your {' & '.join(_missing)} API key(s) above to launch the crew.")
 
 st.title("📈 Market Research Crew AI")
@@ -45,8 +45,8 @@ product_idea = st.text_area(
 if st.button("Generate Market Research", type="primary"):
     if not product_idea.strip():
         st.error("Please enter a product idea.")
-    elif not gemini_key or not serper_key:
-        _api_missing = [k for k, v in [("Gemini", gemini_key), ("Serper", serper_key)] if not v]
+    elif not gemini_key or not tavily_key:
+        _api_missing = [k for k, v in [("Gemini", gemini_key), ("Tavily", tavily_key)] if not v]
         st.error(f"Please enter your **{' & '.join(_api_missing)} API key(s)** in the sidebar before launching.")
     else:
         st.info("Kickstarting the Market Research Crew... This might take a few minutes. Please wait.")
